@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Birthday</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+ body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #ffdde1 0%, #ee9ca7 40%, #1b1b2f 100%);
+  font-family: 'Poppins', sans-serif;
+  overflow-y: auto;   /* allow vertical scroll */
+  overflow-x: hidden; /* prevent horizontal scroll */
+  color: #fff;
+}
+
+  .overlay-tap {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 30;
+    text-align: center;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+  }
+
+  .overlay-tap h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .overlay-tap p {
+    font-size: 0.95rem;
+    max-width: 280px;
+    opacity: 0.85;
+  }
+
+  .overlay-tap span {
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.08);
+  }
+
+  .container {
+    width: min(420px, 92vw);
+    padding: 2rem 1.8rem 2.3rem;
+    border-radius: 20px;
+    background: rgba(12, 12, 30, 0.88);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 0 0 rgba(255,107,157,0.7);
+    position: relative;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 0 0 rgba(255,107,157,0.7); }
+    100% { box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 30px 15px rgba(255,107,157,0.4); }
+  }
+
+  .title {
+    text-align: center;
+    margin-bottom: 1.1rem;
+  }
+
+  .title h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.1rem;
+    color: #ffb6d9;
+    text-shadow: 0 0 12px rgba(255,182,217,0.8);
+    background: linear-gradient(45deg, #ff6b9d, #ffb6d9, #ff9ff3, #ff6b9d);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .title small {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .greeting-line {
+    font-weight: 500;
+    margin-top: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .typed-text {
+    min-height: 210px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 1ch;
+    animation: blink 0.9s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .birthday-note {
+    margin-top: 1.2rem;
+    text-align: center;
+    font-size: 0.86rem;
+    opacity: 0.85;
+  }
+
+  .btn-row {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  /* Interactive shine on buttons */
+  .btn-primary, .btn-ghost {
+    position: relative; 
+    overflow: hidden;
+  }
+  .btn-primary::before, .btn-ghost::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: -100%; 
+    width: 100%; 
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+  }
+  .btn-primary:hover::before, .btn-ghost:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary {
+    border: none;
+    outline: none;
+    padding: 0.55rem 1.4rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff9a9e, #fecfef);
+    color: #2b1234;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 7px 18px rgba(255, 153, 204, 0.5);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(255, 153, 204, 0.7);
+  }
+
+  .btn-ghost {
+    border-radius: 999px;
+    padding: 0.5rem 1.3rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #f5d9ff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-1px);
+  }
+
+  /* Final big heart screen */
+  .final-screen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, #2b133b 0%, #0b0b16 55%, #000 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s ease;
+  }
+
+  .final-heart {
+    font-size: 4.2rem;
+    text-shadow: 0 0 22px rgba(255,105,180,0.9);
+    animation: beat 1.4s infinite ease-in-out;
+  }
+
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.12); }
+    50% { transform: scale(0.98); }
+    75% { transform: scale(1.08); }
+  }
+
+  .final-text-main {
+    margin-top: 1rem;
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    color: #ffd2f3;
+    text-align: center;
+  }
+
+  .final-text-sub {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: fixed;
+    bottom: -40px;
+    font-size: 18px;
+    animation: floatUp 5s linear forwards;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.9); opacity: 1; }
+    100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+  }
+
+  /* Petals */
+  .petals {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 2;
+  }
+
+  .petal {
+    position: absolute;
+    top: -40px;
+    font-size: 20px;
+    animation: fall 12s linear forwards, sway 5s ease-in-out infinite alternate;
+    opacity: 0.9;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh); opacity: 0; }
+  }
+
+  @keyframes sway {
+    from { transform: translateX(-15px); }
+    to   { transform: translateX(15px); }
+  }
+
+  /* Sparkles for final */
+  .sparkle {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: radial-gradient(circle, #ffe6ff 0%, #ff9ad5 60%, transparent 100%);
+    opacity: 0;
+    animation: sparkle 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  @keyframes sparkle {
+    0% { transform: scale(0.3); opacity: 0; }
+    40% { opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  /* Birthday candles */
+  .birthday-particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  }
+  .birthday-candle {
+    position: absolute;
+    width: 8px;
+    height: 20px;
+    background: linear-gradient(#ffd700, #ff8c00);
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 0 12px #ffd700;
+    animation: candleFloat 3s ease-in-out infinite;
+  }
+  @keyframes candleFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-8px) rotate(2deg); }
+  }
+
+  /* Floating cake */
+  @keyframes cakeFloat {
+    to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+  }
+
+</style>
+</head>
+
+<body>
+<!-- Background petals -->
+<div class="petals" id="petalsContainer"></div>
+<!-- Birthday candles -->
+<div class="birthday-particles" id="birthdayParticles"></div>
+
+<!-- Tap to reveal -->
+<div class="overlay-tap" id="tapOverlay">
+  <h2>Tap to reveal 🎂</h2>
+  <p>There's a small birthday surprise I made just for you.</p>
+  <span>Tap to start</span>
+</div>
+
+<!-- Main letter container -->
+<div class="container" id="mainContainer">
+  <div class="title">
+    <h1>Happy Birthday, Grishma</h1>
+    <small>made with a lot of feelings ♥</small>
+  </div>
+
+  <div class="greeting-line" id="greeting"></div>
+  <div class="typed-text"><span id="letter"></span><span class="cursor">|</span></div>
+
+  <div class="birthday-note" id="note" style="opacity:0;">
+    Scroll nahi, बस महसूस करो… this is just a small part of what you deserve today.
+  </div>
+
+  <div class="btn-row" id="buttons" style="opacity:0;">
+    <button class="btn-primary" id="yesBtn">Did it make you smile? 😊</button>
+    <button class="btn-ghost" id="noBtn">Maybe a little 😶‍🌫️</button>
+  </div>
+</div>
+
+<!-- Final screen -->
+<div class="final-screen" id="finalScreen">
+  <div class="final-heart">💖</div>
+  <div class="final-text-main">You're really special to me</div>
+  <div class="final-text-sub">
+    Thanks for letting me be a tiny part of your birthday.
+    Bas itna yaad rakhna… koi hai jo tumhari khushi ke liye sach me care karta hai.
+  </div>
+</div>
+
+<!-- Audio -->
+<audio id="bgMusic" src="BIRTHDAY SONG.mp3" loop></audio>
+
+<script>
+  const tapOverlay = document.getElementById('tapOverlay');
+  const container = document.getElementById('mainContainer');
+  const greetingEl = document.getElementById('greeting');
+  const letterEl = document.getElementById('letter');
+  const noteEl = document.getElementById('note');
+  const buttonsEl = document.getElementById('buttons');
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const finalScreen = document.getElementById('finalScreen');
+  const bgMusic = document.getElementById('bgMusic');
+  const petalsContainer = document.getElementById('petalsContainer');
+  const birthdayParticles = document.getElementById('birthdayParticles');
+
+  const greetingText = "Dear Grishma,";
+  const mainLetter =
+"Today isn't just another date on the calendar, it's the day the world got a little softer, a little kinder, because you were born.\n\n" +
+"Every time you smile, it feels like someone quietly fixes all the bugs in my day. Suddenly, everything runs smoother, lighter, and somehow a little more beautiful.\n\n" +
+"On your birthday, I don't just want to say 'happy birthday'. I want to wish you peace when life feels heavy, confidence when you doubt yourself, and endless small reasons to smile even on your normal, silent days.\n\n" +
+"You deserve good people, good moments, and a future that treats you gently — and I genuinely hope you get all of it.\n\n" +
+"Thank you for just being you… kind, cute, and still the one person who can randomly appear in my mind and change my whole mood.\n\n" +
+"Happy Birthday, Grishma.\n" +
+"Somewhere between all these simple lines is a quiet truth: you're way more special to me than you think.";
+
+  let gIndex = 0;
+  let lIndex = 0;
+
+  // Fade In and Out helpers
+  function fadeIn(el, cb) {
+    el.style.opacity = 0;
+    el.style.display = el.style.display || 'block';
+    let o = 0;
+    const iv = setInterval(() => {
+      o += 0.06;
+      el.style.opacity = o;
+      if (o >= 1) {
+        clearInterval(iv);
+        if (cb) cb();
+      }
+    }, 30);
+  }
+
+  function fadeOut(el, cb) {
+    let o = 1;
+    const iv = setInterval(() => {
+      o -= 0.06;
+      el.style.opacity = o;
+      if (o <= 0) {
+        clearInterval(iv);
+        el.style.display = 'none';
+        if (cb) cb();
+      }
+    }, 30);
+  }
+
+  // Typing greeting
+  function typeGreeting() {
+    if (gIndex < greetingText.length) {
+      greetingEl.textContent += greetingText.charAt(gIndex);
+      gIndex++;
+      setTimeout(typeGreeting, 50); // slow typing for greeting
+    } else {
+      setTimeout(() => {
+        typeLetter();
+      }, 50);
+    }
+  }
+
+  // Typing main letter
+  function typeLetter() {
+    if (lIndex < mainLetter.length) {
+      letterEl.textContent += mainLetter.charAt(lIndex);
+      lIndex++;
+      setTimeout(typeLetter, 45);
+    } else {
+      setTimeout(() => {
+        fadeIn(noteEl);
+        fadeIn(buttonsEl);
+        startHearts();
+      }, 400);
+    }
+  }
+
+  // Floating hearts animation
+  function startHearts() {
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '💗';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = 14 + Math.random()*10 + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, 450);
+  }
+
+  // Falling petals
+  function createPetals(count) {
+    for (let i = 0; i < count; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.textContent = '🌸';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.fontSize = 16 + Math.random()*10 + 'px';
+      petal.style.animationDuration = (10 + Math.random()*5) + 's';
+      petal.style.animationDelay = (Math.random()*5) + 's';
+      petalsContainer.appendChild(petal);
+      setTimeout(() => petal.remove(), 16000);
+    }
+  }
+  setInterval(() => createPetals(3), 1000);
+
+  // Birthday candles floating
+  function createCandles(count) {
+    for (let i = 0; i < count; i++) {
+      const candle = document.createElement('div');
+      candle.className = 'birthday-candle';
+      candle.style.left = Math.random() * 100 + 'vw';
+      candle.style.top = Math.random() * 50 + 'vh';
+      candle.style.animationDelay = Math.random() * 3 + 's';
+      birthdayParticles.appendChild(candle);
+      // Remove after 10 seconds so DOM stays clean
+      setTimeout(() => birthdayParticles.removeChild(candle), 10000);
+    }
+  }
+  setInterval(() => createCandles(2), 4000);
+
+  // Floating cake emojis
+  function createCakes() {
+    setInterval(() => {
+      const cake = document.createElement('div');
+      cake.textContent = '🎂';
+      cake.style.position = 'fixed';
+      cake.style.left = Math.random() * 100 + 'vw';
+      cake.style.top = '100vh';
+      cake.style.fontSize = '2.5rem';
+      cake.style.pointerEvents = 'none';
+      cake.style.animation = 'cakeFloat 8s linear forwards';
+      cake.style.zIndex = '5';
+      document.body.appendChild(cake);
+      setTimeout(() => cake.remove(), 8000);
+    }, 6000);
+  }
+  createCakes();
+
+  // Final sparkles
+  function burstSparkles() {
+    for (let i = 0; i < 26; i++) {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 60 + Math.random()*60;
+      const cx = window.innerWidth / 2 + Math.cos(angle) * radius;
+      const cy = window.innerHeight / 2 + Math.sin(angle) * radius;
+      s.style.left = cx + 'px';
+      s.style.top = cy + 'px';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 1000);
+    }
+  }
+
+  // Overlay tap event - start music immediately
+  tapOverlay.addEventListener('click', () => {
+    if (bgMusic) {
+      bgMusic.volume = 0.75;
+      bgMusic.play().catch(() => {});
+    }
+    fadeOut(tapOverlay);
+    setTimeout(() => {
+      container.style.opacity = 1;
+      container.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        typeGreeting();
+      }, 250);
+    }, 150);
+  });
+
+  // Show final message screen after button clicks
+  function showFinal() {
+    fadeOut(container);
+    setTimeout(() => {
+      finalScreen.style.pointerEvents = 'auto';
+      finalScreen.style.opacity = 1;
+      burstSparkles();
+    }, 400);
+  }
+
+  yesBtn.addEventListener('click', showFinal);
+  noBtn.addEventListener('click', showFinal);
+</script>
+
+<!-- Cake float animation -->
+<style>
+  @keyframes cakeFloat {
+    to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+  }
+</style>
+</body>
+</html>
